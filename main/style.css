@@ -1,0 +1,18 @@
+body {
+    font-family: Courier, sans-serif;
+    text-align: center;
+    color: white;
+    font-size: 24px;
+    background-color: #032541;
+}
+
+input {
+    margin-top: 2rem;
+    padding: 1rem;
+}
+
+.weather_description {
+    color: white;
+    margin-top: 2rem;
+}
+
