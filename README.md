@@ -3,9 +3,7 @@ Weather App
 AI Declaration
 Claude was used in this project.
 
-It was used to verify the 3 APIs that I have chosen to verify their functionality and limits, for example: “how often and how many days can OpenWeather’s API in the free tier fetch data about the weather”. 
-
-No AI assistance or tools were used on the project.
+It was used to verify the 3 APIs that I have chosen to verify their functionality and limits, for example: “how often and how many days can OpenWeather’s API in the free tier fetch data about the weather” or “ MET Norway’s usage rules”. It also helped explain error messages from the browser console.
 
 
 Tools Used
@@ -36,7 +34,7 @@ Points justification
 The rest of the points are from: The PDF is written well, and the application is responsive on both desktop and mobile. It also works on multiple browsers. And the weather app has clear structure and organized 
 
 Displaying the temperature hourly and for the next 7 days was not done. -6 
-I have not been able to test it on the browser Safari. -1 
+I have not been able to test it on the browser Safari. -1 (can change) 
 
 Around 30-33 points would be nice to have.
 
