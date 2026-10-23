@@ -1,5 +1,4 @@
 // UNIT SWITCH (°C / °F / K)
-// Loaded AFTER favorites.js (it uses loadFromStorage and saveToStorage from there) and BEFORE basic.js.
 const unitSymbols = { C: '°C', F: '°F', K: 'K' };
 const unitButtons = document.querySelectorAll('.unit-button');
 
@@ -9,15 +8,19 @@ if (!unitSymbols[unit]) {
     unit = 'C';
 }
 
-// The APIs gives °C, this converts it to the chosen unit
-function formatTemperature(celsius) {
-    let value = celsius;
+// The APIs give °C, this converts it to the chosen unit (as a number)
+function convertTemperature(celsius) {
     if (unit === 'F') {
-        value = celsius * 9 / 5 + 32;
+        return celsius * 9 / 5 + 32;
     } else if (unit === 'K') {
-        value = celsius + 273.15;
+        return celsius + 273.15;
     }
-    return `${value.toFixed(1)}${unitSymbols[unit]}`;
+    return celsius;
+}
+
+// The converted temperature as text, for example "21.5°F"
+function formatTemperature(celsius) {
+    return `${convertTemperature(celsius).toFixed(1)}${unitSymbols[unit]}`;
 }
 
 // Marks the button of the chosen unit with the class "active" 

@@ -1,41 +1,51 @@
-// FAVORITES (and saving in the browser)
-// Loaded BEFORE basic.js. It uses currentData and showForecast from basic.js,
+// FAVORITES 
 const favoriteButton = document.getElementById('favoriteButton');
 const favoritesList = document.getElementById('favoritesList');
 
-// Saving in the browser 
+// Gets a saved value from the browser
 function loadFromStorage(key, fallback) {
     try {
         const saved = JSON.parse(localStorage.getItem(key));
-        return saved === null ? fallback : saved;
-    } catch {
+        if (saved === null) {
+            return fallback;
+        }
+        return saved;
+    } catch (e) {
         return fallback;
     }
 }
 
+// Saves a value in the browser
 function saveToStorage(key, value) {
     try {
         localStorage.setItem(key, JSON.stringify(value));
-    } catch {
-        // Saving is not possible (for example storage is blocked), the app still works without it
+    } catch (e) {
+        console.log('Saving did not work', e);
     }
 }
 
+// The saved places
 let favorites = loadFromStorage('favorites', []);
 
-// Favorites: saved as { name, country, lat, lon }
+// Gives the place of the city in the favorites list, or -1 if it is not in the list
 function getFavoriteIndex(place) {
-    return favorites.findIndex(function (favorite) {
-        return favorite.name === place.name && favorite.country === place.country;
-    });
+    for (let i = 0; i < favorites.length; i++) {
+        if (favorites[i].name === place.name && favorites[i].country === place.country) {
+            return i;
+        }
+    }
+    return -1;
 }
 
-// "Helsinki, FI" (or only the name when there is no country, like for the GPS location)
+// "Helsinki, FI" for example, or just "Helsinki" if the country is not known
 function formatPlaceName(place) {
-    return place.country ? `${place.name}, ${place.country}` : place.name;
+    if (place.country) {
+        return `${place.name}, ${place.country}`;
+    }
+    return place.name;
 }
 
-// Called by the star button
+// Called by the star button: adds the city to the favorites, or removes it if it is already there
 function toggleFavorite() {
     if (!currentData) {
         return;
@@ -45,12 +55,7 @@ function toggleFavorite() {
     const index = getFavoriteIndex(place);
 
     if (index === -1) {
-        favorites.push({
-            name: place.name,
-            country: place.country,
-            lat: place.lat,
-            lon: place.lon
-        });
+        favorites.push(place);
     } else {
         favorites.splice(index, 1);
     }
@@ -60,6 +65,7 @@ function toggleFavorite() {
     updateFavoriteButton();
 }
 
+// Shows the favorite button only when a city is shown, and changes its text
 function updateFavoriteButton() {
     if (!currentData) {
         favoriteButton.hidden = true;
@@ -67,10 +73,15 @@ function updateFavoriteButton() {
     }
 
     favoriteButton.hidden = false;
-    favoriteButton.textContent = getFavoriteIndex(currentData.place) === -1 ? '☆ Add To Favorites' : '★ Remove From Favorites';
+
+    if (getFavoriteIndex(currentData.place) === -1) {
+        favoriteButton.textContent = '☆ Add To Favorites';
+    } else {
+        favoriteButton.textContent = '★ Remove From Favorites';
+    }
 }
 
-// Fills the favorites list with one button per saved place
+// Fills the favorites list with one button for each saved city
 function renderFavorites() {
     favoritesList.innerHTML = '';
 
@@ -79,12 +90,16 @@ function renderFavorites() {
         return;
     }
 
-    favorites.forEach(function (favorite, index) {
+    favorites.forEach(function (favorite) {
         const button = document.createElement('button');
         button.textContent = formatPlaceName(favorite);
+
+        // When the button is clicked: close the list and show the weather of that city
         button.addEventListener('click', function () {
-            selectFavorite(index);
+            favoritesList.hidden = true;
+            showForecast(favorite);
         });
+
         favoritesList.appendChild(button);
     });
 }
@@ -92,14 +107,6 @@ function renderFavorites() {
 // Called by the "Favorites" button: shows or hides the list
 function toggleFavoritesList() {
     favoritesList.hidden = !favoritesList.hidden;
-}
-
-// Called when a favorite is clicked
-function selectFavorite(index) {
-    const favorite = favorites[index];
-
-    favoritesList.hidden = true; // closes the favorites list
-    showForecast(favorite);
 }
 
 renderFavorites();

@@ -1,4 +1,3 @@
-// Use your own OpenWeatherMap API Key below
 const weatherContainer = document.getElementById("weather");
 const city = document.getElementById("city");
 const error = document.getElementById('error');
@@ -24,39 +23,54 @@ function getErrorMessage(commonError) {
 }
 
 async function showForecast(location) {
-    const current = await fetchCurrentWeather(location);
-    const forecast = await fetchForecast(location);
-
-    const place = { lat: forecast.city.coord.lat, lon: forecast.city.coord.lon };
-
-    let openMeteo = null;
     try {
-        openMeteo = await fetchOpenMeteo(place);
-    } catch (sourceError) {
-        console.log('Open-Meteo failed to fetch', sourceError);
-    }
+        weatherContainer.innerHTML = '';
+        error.innerHTML = '';
+        city.innerHTML = '';
+        chart.innerHTML = '';
+        currentData = null;
+        updateFavoriteButton();
 
-    let metNo = null;
-    try {
-        metNo = await fetchMetNo(place);
-    } catch (sourceError) {
-        console.log('MET Norway failed to fetch', sourceError);
-    }
+        const current = await fetchCurrentWeather(location);
+        const forecast = await fetchForecast(location);
 
-    currentData = {
-        place: {
+        const place = {
             name: forecast.city.name,
             country: forecast.city.country,
             lat: forecast.city.coord.lat,
             lon: forecast.city.coord.lon
-        },
-        current: current,
-        forecast: forecast,
-        openMeteo: openMeteo,
-        metNo: metNo
-    };
-    renderForecast();
-    updateFavoriteButton();
+        };
+
+        // The two extra sources are optional: if one fails, the page still works
+        let openMeteo = null;
+        try {
+            openMeteo = await fetchOpenMeteo(place);
+        } catch (sourceError) {
+            console.log('Open-Meteo failed to fetch', sourceError);
+        }
+
+        let metNo = null;
+        try {
+            metNo = await fetchMetNo(place);
+        } catch (sourceError) {
+            console.log('MET Norway failed to fetch', sourceError);
+        }
+
+        currentData = {
+            place: place,
+            current: current,
+            forecast: forecast,
+            openMeteo: openMeteo,
+            metNo: metNo
+        };
+        renderForecast();
+        updateFavoriteButton();
+    }
+
+    catch (commonError) {
+        console.log(commonError);
+        error.innerHTML = getErrorMessage(commonError);
+    }
 }
 
 // Draws the current weather and the forecast from currentData, and sets the colors of the page
@@ -79,5 +93,3 @@ function renderForecast() {
 function fetchWeather() {
     showForecast(document.getElementById('cityInput').value);
 }
- 
-

@@ -1,3 +1,4 @@
+// GET GEOLOCATION
 function getGeolocationErrorMessage(geoError) {
     if (geoError.code === 1) {
         return 'Location access was denied. Allow it in your browser settings to use this.';
