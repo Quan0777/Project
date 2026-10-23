@@ -5,7 +5,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <script src="basic.js" defer></script>
+    <script src="https://unpkg.com/frappe-charts@1.6.2/dist/frappe-charts.min.umd.js"></script>
+
+    <script src="js/api.js" defer></script>
+    <script src="js/basic.js" defer></script>
+    <script src="js/chart.js" defer></script>
+    <script src="js/createWeather.js" defer></script>
+    <script src="js/favorites.js" defer></script>
+    <script src="js/location.js" defer></script>
+    <script src="js/theme.js" defer></script>
+    <script src="js/units.js" defer></script>
+    <script src="js/weatherDescription.js" defer></script>
     <link rel="stylesheet" href="style.css">
 
     <title>Weather App</title>
@@ -21,8 +31,22 @@
 
     <button onclick="useCurrentLocation()">Use Your Current Position</button>
 
+    <div>
+        <button class="unit-button" data-unit="C" onclick="setUnit('C')">°C</button>
+        <button class="unit-button" data-unit="F" onclick="setUnit('F')">°F</button>
+        <button class="unit-button" data-unit="K" onclick="setUnit('K')">K</button>
+    </div>
+    <button onclick="toggleFavoritesList()">★ Favorites</button>
+    <button id="favoriteButton" onclick="toggleFavorite()" hidden></button>
+    <div id="favoritesList" hidden></div>
+    
     <h1 id="city"></h1>
     <p id="error"></p>
     <div id="weather"></div>
+    
+    <div id="chart"></div>
+    <p id="chart_credit">
+        Based on data from MET Norway, OpenWeather and Open-Meteo.
+</p>
 </body>
 </html>

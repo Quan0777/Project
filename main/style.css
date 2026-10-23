@@ -1,9 +1,13 @@
 body {
-    font-family: Courier, sans-serif;
+    font-family: Arial, sans-serif;
     text-align: center;
     color: white;
     font-size: 24px;
     background-color: #032541;
+    margin: 0;
+    padding: 0 16px;
+    box-sizing: border-box;
+    text-align: center;
 }
 
 input {
@@ -12,7 +16,24 @@ input {
 }
 
 .weather_description {
-    color: white;
+    color: rgb(255, 255, 255);
     margin-top: 2rem;
 }
 
+/* For the weather icon */
+.current_icon img { width: 100px; }
+
+/* Inherit color from parent, so that the text would not share the same color as the background */
+#weather, #weather *, #city, #error {
+    color: inherit;
+}
+
+/* For the weather description */
+.current_description {
+    text-transform: capitalize;
+}
+
+#chart {
+    max-width: 800px; 
+    margin: 0 auto;    
+}
