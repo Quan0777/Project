@@ -1,0 +1,32 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    color: white;
+    font-size: 24px;
+    background-color: #032541;
+    margin: 0;
+    padding: 0 16px;
+    box-sizing: border-box;
+}
+
+input {
+    margin-top: 2rem;
+    padding: 1rem;
+}
+
+.weather_description {
+    margin-top: 2rem;
+}
+
+/* For the weather icon */
+.current_icon img { width: 100px; }
+
+/* For the weather description */
+.current_description {
+    text-transform: capitalize;
+}
+
+#chart {
+    max-width: 800px;
+    margin: 0 auto;
+}
